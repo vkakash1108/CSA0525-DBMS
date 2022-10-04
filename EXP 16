@@ -1,0 +1,56 @@
+mysql> DELIMITER $$
+mysql>
+mysql> CREATE PROCEDURE GetCustomerLevel(
+    ->     in  p_customerNumber int(11),
+    ->     out p_customerLevel varchar(15))
+    -> BEGIN
+    ->     DECLARE creditlim double;
+    ->
+    ->     SELECT creditlimit INTO creditlim
+    ->     FROM customers
+    ->     WHERE customerNumber = p_customerNumber;
+    ->
+    ->     IF creditlim > 50000 THEN
+    ->  SET p_customerLevel = "PLATINUM";
+    ->     ELSEIF (creditlim <= 50000 AND creditlim >=18000) THEN
+    ->         SET p_customerLevel = "GOLD";
+    ->     ELSEIF creditlim < 18000 THEN
+    ->         SET p_customerLevel = "SILVER";
+    ->     END IF;
+    ->
+    -> END$$
+Query OK, 0 rows affected (0.05 sec)
+mysql> delimiter //
+mysql> create procedure find_fact(in n int)
+    -> begin
+    -> set @@global.max_sp_recursion_depth=255;
+    -> set @@session.max_sp_recursion_depth=255;
+    -> call factorial(n,@fact);
+    -> select @fact;
+    -> end
+    -> //
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> delimiter //
+mysql> create procedure factorial(in n int,out fact int)
+    -> begin
+    -> if n=1 then
+    -> set fact:=1;
+    -> else
+    -> call factorial(n-1,fact);
+    -> set fact:=n*fact;
+    -> end if;
+    -> end
+    -> //
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> call find_fact(5);
+    -> //
++-------+
+| @fact |
++-------+
+|   120 |
++-------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
