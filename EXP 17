@@ -1,0 +1,36 @@
+delimiter $$
+ create procedure bulid_email_list(INOUT email_list varchar(4000))
+    begin
+     declare v_finished integer default 0;
+     declare v_email varchar(100) default "";
+    declare email_cursor cursor for
+    select email from employees;
+     declare continue handler for
+     not found set v_finished=1;
+    open email_cursor;
+     get_email:loop
+     FETCH email_cursor into v_email;
+     if v_finished =1 then
+     leave get_email;
+    end if;
+     set email_list=concat(v_email,";",email_list3);
+     end loop get_email;
+     close email_cursor;
+     end $$
+mysql> delimiter $$
+mysql> set @email_list="";
+    -> $$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call build_email(@email_list);
+    -> $$
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select @email_list;
+    -> $$
++---------------------------------------------------+
+| @email_list                                       |
++---------------------------------------------------+
+| ramyadevi@gmail.com,ramya@gmail.com,uk@gmail.com, |
++---------------------------------------------------+
+1 row in set (0.00 sec)
