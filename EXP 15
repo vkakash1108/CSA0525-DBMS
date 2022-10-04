@@ -1,0 +1,62 @@
+mysql> delimiter //
+mysql> create function customerlevel1(p_creditlimit int) returns varchar(10)
+    -> deterministic
+    -> begin
+    -> declare lvl varchar(10);
+    -> if p_creditlimit >50000 then
+    -> set lvl='platinum';
+    -> elseif (p_creditlimit <=50000 and p_creditlimit >=10000) then
+    -> set lvl='gold';
+    -> elseif(p_creditlimit<=10000) then
+    -> set lvl='silver';
+    -> end if;
+    -> return (lvl);
+    -> end
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select name,customerlevel1(creditlimit) from customer order by name//
+ERROR 1054 (42S22): Unknown column 'creditlimit' in 'field list'
+mysql> select name,customerlevel1(id) from customer order by name//
++---------+--------------------+
+| name    | customerlevel1(id) |
++---------+--------------------+
+| sadvika | silver             |
++---------+--------------------+
+1 row in set (0.00 sec)
+mysql> use db;
+Database changed
+mysql> delimiter $$
+mysql> create procedure find_fact(in n int)
+    -> begin
+    -> set @@global.max_sp_recursion_depth=255;
+    -> set @@session.max_sp_recursion_depth=255;
+    -> call factorial(n,@fact);
+    -> select @fact;
+    -> end
+    -> $$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter $$
+mysql> create procedure factorial(in n int,out fact int)
+    -> begin
+    -> if n=1 then
+    -> set fact:=1;
+    -> else
+    -> call factorial(n-1,fact);
+    -> set fact:=n*fact;
+    -> end if;
+    -> end
+    -> $$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call find_fact(6);
+    -> $$
++-------+
+| @fact |
++-------+
+|   720 |
++-------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
