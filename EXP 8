@@ -1,0 +1,35 @@
+mysql> use db;
+Database changed
+mysql> select faculty1.facno,faculty1.name,department.deptno,department.deptname from faculty1 cross join department;
++-------+------+--------+----------+
+| facno | name | deptno | deptname |
++-------+------+--------+----------+
+|   123 | Raju |      1 | cse      |
++-------+------+--------+----------+
+1 row in set (0.00 sec)
+
+mysql> desc student;
++----------+----------+------+-----+---------+-------+
+| Field    | Type     | Null | Key | Default | Extra |
++----------+----------+------+-----+---------+-------+
+| regno    | int(10)  | YES  |     | NULL    |       |
+| name     | char(20) | YES  |     | NULL    |       |
+| gender   | char(10) | YES  |     | NULL    |       |
+| DOB      | int(10)  | YES  |     | NULL    |       |
+| mobileno | int(10)  | YES  |     | NULL    |       |
+| city     | char(20) | NO   | PRI |         |       |
++----------+----------+------+-----+---------+-------+
+6 rows in set (0.02 sec)
+
+mysql> select student.name,student.regno,course.courseno from student inner join course on student.course=course.courseno;
+ERROR 1054 (42S22): Unknown column 'student.course' in 'on clause'
+mysql> select student.name,student.regno,course.courseno from student inner join course on student.mobileno=course.courseno;
+Empty set (0.01 sec)
+
+mysql> select faculty1.facno,faculty1.name,department.deptno,department.deptname from faculty1 cross join department;
++-------+------+--------+----------+
+| facno | name | deptno | deptname |
++-------+------+--------+----------+
+|   123 | Raju |      1 | cse      |
++-------+------+--------+----------+
+1 row in set (0.00 sec)
