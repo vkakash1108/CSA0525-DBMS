@@ -1,0 +1,28 @@
+mysql> use db;
+Database changed
+mysql> create view stu_view as select regno,name and dob from stu;
+ERROR 1146 (42S02): Table 'db.stu' doesn't exist
+mysql> create view stu_view as select regno,name and dob from student;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from stu_view;
++-----------+--------------+
+| regno     | name and dob |
++-----------+--------------+
+| 192011465 |            0 |
+| 192011465 |            0 |
++-----------+--------------+
+2 rows in set, 2 warnings (0.01 sec)
+
+mysql> create index regno on student(regno);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show index from student;
++---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table   | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| student |          0 | PRIMARY  |            1 | city        | A         |           2 |     NULL | NULL   |      | BTREE      |         |               |
+| student |          1 | regno    |            1 | regno       | A         |           2 |     NULL | NULL   | YES  | BTREE      |         |               |
++---------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.01 sec)
