@@ -1,0 +1,37 @@
+mysql> create procedure student()
+    -> select *from student;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call student();
++-----------+------------+--------+------------+-----------+----------+------------+--------+-----------+
+| reg_no    | name       | gender | dob        | mobile_no | city     | reg_course | scores | assements |
++-----------+------------+--------+------------+-----------+----------+------------+--------+-----------+
+|        10 | hari       | m      | 2002-08-07 |     93981 | kadapa   |          1 |     97 |         2 |
+|        11 | durga      | m      | 2002-04-09 |    728799 | guntur   |          1 |     57 |         7 |
+|        13 | ramya      | f      | 2002-10-07 |    767589 | chittor  |          6 |    100 |         1 |
+|        17 | venu kumar | m      | 2002-04-07 |     72739 | guntur   |          2 |     98 |         2 |
+|        19 | uday kiran | m      | 2002-11-14 |    773192 | chirala  |          6 |    100 |         1 |
+|        21 | jagadish   | m      | 2002-01-09 |     76659 | ponnur   |          9 |     30 |         1 |
+|        23 | bhagya     | f      | 2002-09-10 |     70999 | tirupati |          9 |     46 |         5 |
+|        27 | sameera    | f      | 2002-03-10 |     72739 | chirala  |         21 |     63 |         2 |
+| 191711342 | kiran      | m      | 2002-11-14 |  77319232 | chirala  |       NULL |   NULL |      NULL |
++-----------+------------+--------+------------+-----------+----------+------------+--------+-----------+
+9 rows in set (0.00 sec)
+mysql> delimiter $$
+mysql> create procedure cus_level(
+    -> in p_cus_num int(11),
+    -> out p_cus_level varchar(10))
+    -> begin
+    ->  declare creditlin double;
+    ->  select creditlimit into creditlin
+    ->  from customers
+    ->  where cust_number - p_cus_num;
+    ->  if creditlin>50000 then
+    -> set p_cus_level='paltinum';
+    ->  elseif (creditlin <=50000 and creditlin>=10000)then
+    ->   set p_cus_level='gold';
+    ->  elseif creditlin <10000 then
+    ->   set p_cus_level='silver';
+    ->  end if;
+    -> end$$
+Query OK, 0 rows affected, 1 warning (0.01 sec)
