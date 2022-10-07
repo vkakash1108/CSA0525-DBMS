@@ -1,0 +1,19 @@
+<?php
+$host=
+$password=””;
+$conn=mysqli_connect($host,$user,$password);
+if(!$conn)
+{
+Die(‘couldnot connect:’,mysql_connect_error());
+}
+echo”connectsuccessfully(‘br/>’)”;
+$sql=’Create database mydb’;
+$sql="create table emp(id int,namevarchar(20) NOT NULL,empsalary INT NOT NULL,primary key(id))";
+$sql=”insert into emp(id,name,empsalary) values(2222,RANA,200000)”;
+$sql=”delete from emp where id=1”;
+$sql=”updateemp set empsalary=2500000 where id=2222”;
+if(mysqli_query($conn,$sql))
+{echo ”operations failed failed”,mysqli_error($conn);
+}
+mysqli_close($conn);
+?> 
